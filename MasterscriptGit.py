@@ -7,6 +7,7 @@ import os
 # List of raw GitHub URLs to your scripts
 GITHUB_SCRIPTS = [
     "https://raw.githubusercontent.com/MariaKlap/RI/main/EMAnews2.py",
+    "https://raw.githubusercontent.com/MariaKlap/RI/main/ECnews11.py"
     # Add more script URLs here
 ]
 
