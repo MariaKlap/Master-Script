@@ -6,8 +6,25 @@ import os
 
 # List of raw GitHub URLs to your scripts
 GITHUB_SCRIPTS = [
-    "https://raw.githubusercontent.com/MariaKlap/RI/main/EMAnews2.py",
-    "https://raw.githubusercontent.com/MariaKlap/RI/main/ECnews11.py"
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/EMAnews2.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/ECnews11.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/ICR.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/ICHnews.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/IS1.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/SWISS5.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/AT.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/GMP.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/EC-Updates.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/EC-Medical.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/FDAnews.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/RQAnews4.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/Topra.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/raps-2.py",
+    #"https://raw.githubusercontent.com/MariaKlap/RI/main/WHOnews.py",
+    "https://raw.githubusercontent.com/MariaKlap/RI/main/CBGnewsfinal5win.py",
+    "https://raw.githubusercontent.com/MariaKlap/RI/main/HMA6news.py"
+    
+    
     # Add more script URLs here
 ]
 
