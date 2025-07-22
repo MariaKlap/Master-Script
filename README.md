@@ -4,21 +4,22 @@ This repository contains the automation logic for collecting, consolidating, and
 
 ---
 
-## ✅ Prerequisites
+## **✅ PREREQUISITES**
 
 Before running the script, ensure you have:
 
 - Python installed (version 3.8 or above)
 - Required libraries:
-
-📥 1. Update GitHub Data
+  ```bash
+  pip install pandas openpyxl python-docx requests
+🔁 STEP 1: UPDATE GITHUB DATA
 Ensure that the latest RI.csv file is uploaded to the Master-Script repository at:
 
 👉 https://github.com/MariaKlap/Master-Script
 
 ⚠️ The file name must be RI.csv for the comparison and merging to work properly.
 
-💻 2. Run MasterscriptGit.py Locally
+💻 STEP 2: RUN MasterscriptGit.py LOCALLY
 From your local system:
 
 Download MasterscriptGit.py from this repository.
@@ -26,8 +27,11 @@ Download MasterscriptGit.py from this repository.
 Place it in a working folder.
 
 Run the script:
-python MasterscriptGit.py
 
+bash
+Copy
+Edit
+python MasterscriptGit.py
 This will generate the following files in the same directory:
 
 RI.xlsx: Combined news entries from all Excel sources
@@ -40,12 +44,16 @@ News.xlsx: Newly published articles compared to existing GitHub data
 
 RI_News.docx: Word report for Regulatory Affairs team
 
-📊 3. Import Data into Power BI
+📊 STEP 3: IMPORT DATA INTO POWER BI
 Open Power BI Desktop, then:
 
-Go to: Home > Get Data > More > Python Script
+Go to Home > Get Data > More > Python Script
 
 Paste the following code:
+
+python
+Copy
+Edit
 import sqlite3
 import pandas as pd
 
@@ -53,21 +61,29 @@ import pandas as pd
 db_path = r'C:\Path\To\Your\RI.db'  # ← replace with actual path
 
 conn = sqlite3.connect(db_path)
+
 query = "SELECT * FROM regulatory_intelligence"
 df = pd.read_sql_query(query, conn)
-conn.close()
 
+conn.close()
 Click OK and import the data.
 
 Build your report as needed and publish it to the Power BI Service.
 
-✉️ 4. Email Template to RA Department
-Attach the following files: RI_News.docx & RI.xlsx
+📧 STEP 4: EMAIL TEMPLATE TO RA DEPARTMENT
+Attach the following files:
+
+RI_News.docx
+
+RI.xlsx
 
 Subject: Monthly Regulatory Intelligence Update
 
 Body:
 
+sql
+Copy
+Edit
 Dear All,
 
 You can find new news from last month in the attached RI_News.docx.
