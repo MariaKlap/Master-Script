@@ -87,9 +87,9 @@ Attach the following files:
 ```
 Dear All,
 
-You can find new news from last month in the attached RI_News.docx.
+Please find the latest news from last month in the attached RI_News.docx file.
 
-All news collected from last month (including repeated ones) is available in RI.xlsx, and you can explore the full dashboard using the link below:
+All news collected over the past month (including duplicates) is available in RI.xlsx. You can explore the full dashboard using the link below:
 
 👉 [Share your Power BI report link here]
 
