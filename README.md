@@ -1,4 +1,3 @@
-
 # Regulatory Intelligence Automation Script
 
 This repository contains the automation logic for collecting, consolidating, and reporting regulatory news updates across multiple channels. The output includes Excel, CSV, SQLite, and Word formats, ready for sharing and reporting in Power BI.
@@ -12,28 +11,22 @@ Before running the script, ensure you have:
 - Python installed (version 3.8 or above)
 - Required libraries:
 
+📥 1. Update GitHub Data
+Ensure that the latest RI.csv file is uploaded to the Master-Script repository at:
 
+👉 https://github.com/MariaKlap/Master-Script
 
-### 1. Update GitHub Data
+⚠️ The file name must be RI.csv for the comparison and merging to work properly.
 
-Ensure that the **latest `RI.csv` file** is uploaded to the **`Master-Script` repository** at:
-
-👉 [`https://github.com/MariaKlap/Master-Script`](https://github.com/MariaKlap/Master-Script)
-
-> ⚠️ The file name **must be `RI.csv`** for the comparison and merging to work properly.
-
----
-
-### 2. Run `MasterscriptGit.py` Locally
-
+💻 2. Run MasterscriptGit.py Locally
 From your local system:
 
-1. Download `MasterscriptGit.py` from this repository.
-2. Place it in a working folder.
-3. Run the script:
- ```bash
- python MasterscriptGit.py
+Download MasterscriptGit.py from this repository.
 
+Place it in a working folder.
+
+Run the script:
+python MasterscriptGit.py
 
 This will generate the following files in the same directory:
 
@@ -47,15 +40,12 @@ News.xlsx: Newly published articles compared to existing GitHub data
 
 RI_News.docx: Word report for Regulatory Affairs team
 
-
-### 3. Import Data into Power BI
-
+📊 3. Import Data into Power BI
 Open Power BI Desktop, then:
 
-Go to Home > Get Data > More > Python Script
+Go to: Home > Get Data > More > Python Script
 
 Paste the following code:
-
 import sqlite3
 import pandas as pd
 
@@ -63,20 +53,20 @@ import pandas as pd
 db_path = r'C:\Path\To\Your\RI.db'  # ← replace with actual path
 
 conn = sqlite3.connect(db_path)
-
 query = "SELECT * FROM regulatory_intelligence"
 df = pd.read_sql_query(query, conn)
-
 conn.close()
 
 Click OK and import the data.
 
 Build your report as needed and publish it to the Power BI Service.
 
-
-### 4. Email Template to RA Department - attached files: RI_News.docx & RI.xlsx
+✉️ 4. Email Template to RA Department
+Attach the following files: RI_News.docx & RI.xlsx
 
 Subject: Monthly Regulatory Intelligence Update
+
+Body:
 
 Dear All,
 
@@ -92,5 +82,3 @@ Kind regards,
 [Your Name]
 
 Stay informed. Stay compliant.
-
-
