@@ -11,6 +11,7 @@ from docx import Document
 from docx.shared import Pt
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
+from datetime import datetime, timedelta
 
 # List of raw GitHub URLs to your scripts
 GITHUB_SCRIPTS = [
@@ -47,7 +48,6 @@ GITHUB_SCRIPTS = [
     "https://raw.githubusercontent.com/MariaKlap/RI/refs/heads/main/SEn.py",
     "https://raw.githubusercontent.com/MariaKlap/RI/refs/heads/main/SEns.py",
     "https://raw.githubusercontent.com/MariaKlap/RI/refs/heads/main/SEnsa.py",
-    
 ]
 
 # Set up logging
@@ -77,35 +77,76 @@ def download_and_run_script(url):
 
 def combine_excel_files():
     """Combine all Excel files in the directory into one RI.xlsx, preserving None values"""
+    combined_df = pd.DataFrame()
+    excel_files = []
+    
     try:
         logging.info("🔍 Searching for Excel files to combine...")
         excel_files = glob.glob(os.path.join(os.getcwd(), '*.xlsx'))
-        
+
         # Filter out our output file if it exists
         excel_files = [f for f in excel_files if not f.endswith('RI.xlsx')]
-        
+
         if not excel_files:
             logging.warning("⚠️ No Excel files found to combine")
             return False
-        
+
         logging.info(f"📂 Found {len(excel_files)} Excel files to combine")
-        
-        combined_df = pd.DataFrame()
-        
+
         for file in excel_files:
             try:
-                # Read each Excel file, keeping None values
                 df = pd.read_excel(file, keep_default_na=True)
-                # Add source file name as a column
                 df['Source_File'] = os.path.basename(file)
-                # Combine with main dataframe
                 combined_df = pd.concat([combined_df, df], ignore_index=True)
                 logging.info(f"➕ Added {file} to combined dataframe")
             except Exception as e:
                 logging.error(f"❌ Error reading {file}: {e}")
-        
+                continue  # Continue with next file even if one fails
+
+        # Enhanced Date Handling
+        if 'Date' in combined_df.columns:
+            try:
+                # Step 1: Replace common placeholders with NA
+                combined_df['Date'] = combined_df['Date'].replace(['None', 'N/A', 'NA', ''], pd.NA)
+                
+                # Step 2: Standardize separators (dots and dashes to slashes)
+                combined_df['Date'] = combined_df['Date'].astype(str).str.replace('[.-]', '/', regex=True)
+                
+                # Step 3: Convert to datetime
+                parsed_dates = pd.to_datetime(
+                    combined_df['Date'],
+                    errors='coerce',
+                    dayfirst=True
+                )
+                
+                combined_df['Date'] = parsed_dates
+                
+                # Step 4: Filter by date (keep last 12 months or None)
+                one_year_ago = pd.Timestamp.now() - pd.DateOffset(months=12)
+                initial_count = len(combined_df)
+                
+                combined_df = combined_df[
+                    (combined_df['Date'].isna()) | 
+                    (combined_df['Date'] >= one_year_ago)
+                ]
+                
+                filtered_count = initial_count - len(combined_df)
+                logging.info(f"🧹 Filtered out {filtered_count} records older than {one_year_ago.date()}")
+                
+                # Step 5: Format for output (preserve NaT as None)
+                combined_df['Date'] = combined_df['Date'].dt.strftime('%d-%m-%Y').where(
+                    combined_df['Date'].notna(), None
+                )
+                
+                logging.info(f"✅ Processed 'Date' column. Kept {len(combined_df)} records.")
+            except Exception as e:
+                logging.error(f"❌ Failed to process 'Date' column: {e}")
+                # Keep original dates if processing fails
+                combined_df['Date'] = combined_df['Date'].astype(str)
+        else:
+            logging.warning("⚠️ 'Date' column not found in combined DataFrame. Skipping date filtering.")
+
         if not combined_df.empty:
-            # Save combined Excel, keeping None values
             output_path = os.path.join(os.getcwd(), 'RI.xlsx')
             combined_df.to_excel(output_path, index=False, na_rep='None')
             logging.info(f"💾 Saved combined Excel to {output_path}")
@@ -113,10 +154,14 @@ def combine_excel_files():
         else:
             logging.warning("⚠️ No data to save - combined dataframe is empty")
             return False
-        
+
     except Exception as e:
-        logging.error(f"❌ Error combining Excel files: {e}")
+        logging.error(f"❌ Unexpected error in combine_excel_files: {e}")
         return False
+        
+    finally:
+        # Cleanup or resource release could go here if needed
+        logging.info("🏁 Finished combine_excel_files operation")
 
 def convert_excel_to_db():
     """Convert RI.xlsx to RI.db SQLite database and RI.csv file, preserving None values"""
